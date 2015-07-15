@@ -493,18 +493,40 @@ function calendar (calendarOptions) {
     month.date = offsetCal.clone();
 
     function part (data) {
-      var i, day, node;
+      var i, day, node, text, stateElem;
       for (i = 0; i < data.length; i++) {
         if (tr.children.length === weekdayCount) {
           tr = dom({ type: 'tr', className: o.styles.dayRow, parent: month.body });
         }
         day = data.base.clone().add(i, 'days');
+
+        var validationClasses = validationTest(day, data.cell.join(' ').split(' '));
+        var finalClassesAndStatesObject = dayStates(day, validationClasses);
+
         node = dom({
           type: 'td',
           parent: tr,
-          text: day.format(o.dayFormat),
-          className: validationTest(day, data.cell.join(' ').split(' ')).join(' ')
+          className: finalClassesAndStatesObject.cell.join(' ')
         });
+        
+        // This relies on a pointer-events none (shipped by default) 
+        // to have the td above remain as the selected node.
+        text = dom({
+          type: 'span',
+          parent: node,
+          text: day.format(o.dayFormat),
+          className: o.styles.dayBodyElemText
+        });
+
+        if (finalClassesAndStatesObject.addOnText) {
+          stateElem = dom({
+            type: 'span',
+            parent: node,
+            text: finalClassesAndStatesObject.addOnText,
+            className: o.styles.dayBodyElemAddOn
+          });
+        }
+
         if (data.selectable && day.date() === current) {
           selectDayElement(node);
         }
@@ -520,6 +542,53 @@ function calendar (calendarOptions) {
       if (value) { cell.push(o.styles.dayConcealed); }
       return cell;
     }
+
+    function dayStates (day, cell) {
+      var state = hasStates(day, true, o.dateLabeler);
+      var returnObject = {};
+      // Result is meant to be an object or false.
+      if (state && state.result) {
+        // With property of result, and items against that date.
+        if (state.items && state.items.length > 0) {
+          for(var i = 0, length1 = state.items.length; i < length1; i++){
+            cell.push(state.items[i]);
+          }
+        }
+        //A state object could contain an addOnText element we should also render.
+        //This element can be returned to the calling code if it chooses to use it.
+        if (state.addOnText) {
+          returnObject.addOnText = state.addOnText;
+        }
+      }
+      returnObject.cell = cell;
+      return returnObject;
+    }
+
+  }
+
+  // If a function was provided to determine it's validity in having States,
+  // return that result in an object.
+  function hasStates (date, allday, dateLabeler) {
+    //If outside of the min and max range in the options, move on.
+    if (isInRangeLeft(date, allday)) {
+      return false;
+    }
+    if (isInRangeRight(date, allday)) {
+      return false;
+    }
+    //If it IS in the displayable range, do some checking.
+    //Call a function (if defined) to return a test bool with result object.
+    var labelResult = (dateLabeler || Function.prototype).call(api, date.toDate());
+    console.log(date._d,'labelResult',labelResult);
+
+    if (labelResult && labelResult.result === true) {
+      //If the function succeeds return it's object.
+      //Bonus points if they included an additional addOnText property,
+      //It will be used to render a new span for a day. 
+      return labelResult;
+    }
+    //Otherwise false will do.
+    return false;
   }
 
   function isInRange (date, allday, validator) {

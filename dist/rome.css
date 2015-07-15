@@ -52,6 +52,9 @@
   cursor: pointer;
   text-align: center;
 }
+.rd-day-body-text {
+  pointer-events: none;
+}
 .rd-day-selected,
 .rd-time-selected,
 .rd-time-option:hover {

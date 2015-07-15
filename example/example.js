@@ -2,7 +2,7 @@ var moment = rome.moment;
 
 rome(dt);
 rome(ivi);
-rome(ivp, { initialValue: '2014-12-08 08:36' });
+rome(ivp, { initialValue: '2015-12-08 08:36' });
 rome(sm, { weekStart: 1 });
 rome(d, { time: false });
 rome(t, { date: false });
@@ -27,8 +27,8 @@ function toggler () {
   toggle.innerHTML = picker.destroyed ? 'Restore <code>rome</code> instance!' : 'Destroy <code>rome</code> instance!';
 }
 
-rome(mm, { min: '2013-12-30', max: '2014-10-01' });
-rome(mmt, { min: '2014-04-30 19:45', max: '2014-09-01 08:30' });
+rome(mm, { min: '2013-12-30', max: '2015-10-01' });
+rome(mmt, { min: '2015-04-30 19:45', max: '2015-09-01 08:30' });
 
 rome(iwe, {
   dateValidator: function (d) {
@@ -81,27 +81,27 @@ rome(rightInline, {
 });
 
 rome(exa, {
-  dateValidator: rome.val.except('2014-08-01')
+  dateValidator: rome.val.except('2015-07-01')
 });
 
 rome(exb, {
-  dateValidator: rome.val.except('2014-08-02', '2014-08-06')
+  dateValidator: rome.val.except('2015-07-02', '2015-07-06')
 });
 
 rome(exc, {
-  dateValidator: rome.val.except(['2014-08-04', '2014-08-09'])
+  dateValidator: rome.val.except(['2015-07-04', '2015-07-09'])
 });
 
 rome(exd, {
-  dateValidator: rome.val.except([['2014-08-03', '2014-08-07'], '2014-08-15'])
+  dateValidator: rome.val.except([['2015-07-03', '2015-07-07'], '2015-07-15'])
 });
 
 rome(exe, {
   dateValidator: rome.val.only([
-    ['2014-08-01', '2014-08-15'], '2014-08-22'
+    ['2015-07-01', '2015-07-15'], '2015-07-22'
   ])
 });
 
 rome(exf, {
-  dateValidator: rome.val.except([exb, exd, '2014-08-15'])
+  dateValidator: rome.val.except([exb, exd, '2015-07-15'])
 });

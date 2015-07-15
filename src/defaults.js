@@ -57,6 +57,7 @@ function defaults (options, cal) {
   }
   if (o.dateValidator === no) { o.dateValidator = Function.prototype; }
   if (o.timeValidator === no) { o.timeValidator = Function.prototype; }
+  if (o.dateLabeler === no) { o.dateLabeler = Function.prototype; }
   if (o.timeFormat === no) { o.timeFormat = 'HH:mm'; }
   if (o.weekStart === no) { o.weekStart = momentum.moment().weekday(0).day(); }
   if (o.weekdayFormat === no) { o.weekdayFormat = 'min'; }
@@ -83,6 +84,8 @@ function defaults (options, cal) {
   if (styl.date === no) { styl.date = 'rd-date'; }
   if (styl.dayBody === no) { styl.dayBody = 'rd-days-body'; }
   if (styl.dayBodyElem === no) { styl.dayBodyElem = 'rd-day-body'; }
+  if (styl.dayBodyElemText === no) { styl.dayBodyElemText = 'rd-day-body-text'; }
+  if (styl.dayBodyElemAddOn === no) { styl.dayBodyElemAddOn = 'rd-day-body-addon'; }
   if (styl.dayPrevMonth === no) { styl.dayPrevMonth = 'rd-day-prev-month'; }
   if (styl.dayNextMonth === no) { styl.dayNextMonth = 'rd-day-next-month'; }
   if (styl.dayDisabled === no) { styl.dayDisabled = 'rd-day-disabled'; }
